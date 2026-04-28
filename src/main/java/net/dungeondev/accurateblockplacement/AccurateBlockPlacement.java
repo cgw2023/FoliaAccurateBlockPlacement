@@ -355,11 +355,11 @@ public class AccurateBlockPlacement extends JavaPlugin implements Listener {
 		if (canPlace) {
 			// schedule the block update for next tick to bypass Paper's validation
 			final BlockData finalBlockData = blockData;
-			getServer().getScheduler().runTask(this, () -> {
-				if (block.getType() == finalBlockData.getMaterial()) {
-					block.setBlockData(finalBlockData, false);
-					debug("Applied scheduled blockdata update");
-				}
+            getServer().getRegionScheduler().run(this, block.getLocation(), (task) -> {
+                if (block.getType() == finalBlockData.getMaterial()) {
+                    block.setBlockData(finalBlockData, false);
+                    debug("Applied scheduled blockdata update");
+                }
 			});
 		} else {
 			event.setCancelled(true);
@@ -376,12 +376,13 @@ public class AccurateBlockPlacement extends JavaPlugin implements Listener {
 		accurateBlockProtocol(event, protocolValue);
 
 		// if not cancelled by accurateBlockProtocol, force the placement
-		if (!event.isCancelled()) {
-			final BlockData finalBlockData = blockData;
-			getServer().getScheduler().runTask(this, () -> {
-				block.setBlockData(finalBlockData, false);
-			});
-		}
+        if (!event.isCancelled()) {
+            final BlockData finalBlockData = blockData.clone();
+
+            getServer().getRegionScheduler().run(this, block.getLocation(), (task) -> {
+                block.setBlockData(finalBlockData, false);
+            });
+        }
 	}
 
 	private BlockFace rotateCW(BlockFace in) {

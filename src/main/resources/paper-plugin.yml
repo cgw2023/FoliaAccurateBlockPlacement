@@ -1,9 +1,10 @@
-name: PaperAccurateBlockPlacement
+name: FoliaAccurateBlockPlacement
 version: 1.2.0
 main: net.dungeondev.accurateblockplacement.AccurateBlockPlacement
 description: Implements the Carpet AccurateBlockPlacement protocol on Paper
 author: hxrry27 (forked from DungeonDev)
 api-version: 26.1
+folia-supported: true
 dependencies:
   server:
     ProtocolLib:
@@ -11,7 +12,7 @@ dependencies:
 
 commands:
   abp:
-    description: PaperAcurateBlockPlacement commands
+    description: FoliaAcurateBlockPlacement commands
     usage: /abp [reload]
 
 permissions:
